@@ -1,0 +1,59 @@
+# Upptime config for the Simple HQ status page (https://status.simple.biz).
+# Docs: https://upptime.js.org/docs/configuration
+#
+# This repo is PUBLIC. Never put credentials, API keys or tokens here, and only
+# monitor URLs that respond without auth.
+
+owner: Simple-biz # GitHub org that owns this repo
+repo: simple-hris-health # this repo's name; change both if you create it elsewhere
+
+sites:
+  - name: Simple HQ
+    slug: simple-hq # fixed so renaming the site keeps its history and issue label
+    url: https://hq.simple.biz/login
+    expectedStatusCodes:
+      - 200
+
+  # Currently 307-redirects to hq.simple.biz/login; Upptime follows redirects,
+  # so this checks that the redirect works and the final page returns 200.
+  - name: Simple HQ (legacy domain)
+    slug: simple-hq-legacy
+    url: https://simple-hris.vercel.app/login
+    expectedStatusCodes:
+      - 200
+
+  # Placeholder: enable once the app repo ships an unauthenticated health route.
+  # Today this URL returns 401 because the app's auth guard covers /api/*, so
+  # the route must be exempted from auth before this check can pass.
+  # - name: Simple HQ API
+  #   slug: simple-hq-api
+  #   url: https://hq.simple.biz/api/health
+  #   expectedStatusCodes:
+  #     - 200
+
+workflowSchedule:
+  uptime: "*/5 * * * *" # every 5 minutes (GitHub may delay scheduled runs at busy times)
+
+# Exact list of repo secrets passed to Upptime. Empty: the checks need none.
+# GH_PAT is passed separately by the generated workflows.
+secrets: []
+
+status-website:
+  cname: status.simple.biz # also in assets/CNAME
+  name: Simple HQ Status
+  logoUrl: /logo-192.png # files in assets/ are published at the site root
+  favicon: /logo-192.png
+  introMessage: Live status of Simple HQ, checked every 5 minutes.
+  navbar: # the logo already links home
+    - title: Open Simple HQ
+      href: https://hq.simple.biz
+  links:
+    - rel: stylesheet
+      href: /status.css
+  scripts:
+    # 90-day uptime bars per service; ?repo= must match owner/repo above
+    - src: /uptime-bars.js?repo=Simple-biz/simple-hris-health
+      async: true
+
+i18n:
+  allSystemsOperational: All Systems Operational

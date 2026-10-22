@@ -1,0 +1,75 @@
+/* Simple HQ status page tweaks on top of Upptime's theme. Loaded via
+   status-website.links in .upptimerc.yml; colours come from the theme
+   variables so light and dark mode both work. */
+
+/* Overall status banner on the home page, shown while no incident is open. */
+main > header + article.up {
+  background: var(--up-border-left-color);
+  border-color: var(--up-border-left-color);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+/* Keep each service's response-time graph in the top of its card, clear of
+   the uptime bars drawn by uptime-bars.js. !important because Upptime's own
+   rule uses a triple-scoped Svelte class that a normal selector can't beat. */
+section.live-status article.graph {
+  background-size: auto 5rem !important;
+  background-position: right 1.25rem top 0.5rem !important;
+}
+
+/* 90-day uptime bars (uptime-bars.js) */
+.uptime-bars {
+  margin-top: 0.75rem;
+}
+.uptime-bars-row {
+  display: flex;
+  gap: 2px;
+  height: 2rem;
+}
+.uptime-bars-row span {
+  flex: 1;
+  border-radius: 1px;
+  background: var(--up-border-left-color);
+}
+.uptime-bars-row span.minor {
+  background: var(--degraded-border-left-color);
+}
+.uptime-bars-row span.major {
+  background: var(--down-border-left-color);
+}
+.uptime-bars-row span.none {
+  background: var(--card-border-color);
+}
+.uptime-bars-row span:hover {
+  opacity: 0.6;
+}
+.uptime-bars-legend {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.uptime-bars-short {
+  display: none;
+}
+
+/* Phones: show the last 30 days (MOBILE_DAYS in uptime-bars.js), and drop the
+   inline graph, which would sit on top of the text. Each service's page still
+   has the full response-time graph. */
+@media (max-width: 600px) {
+  section.live-status article.graph {
+    background-image: none !important;
+  }
+  .uptime-bars-row span:nth-child(-n + 60) {
+    display: none;
+  }
+  .uptime-bars-long {
+    display: none;
+  }
+  .uptime-bars-short {
+    display: inline;
+  }
+}
